@@ -43,13 +43,50 @@ Su objetivo es centralizar la información de viaje en un solo lugar, ofreciendo
 
 ---
 
-## 4. Flujo de navegación
+## 4. Flujo de Navegación
 
-**Estructura general de pantallas:**
+**Estructura general del flujo de pantallas:**
 
-Pantalla de Bienvenida -> Pantalla Home -> Selección de Categoría -> Pantalla de Detalle -> Ver en Mapa (abre Google Maps) -> Guardar en Favoritos
-↓
-Pantalla de Favoritos
-↓
-Regresar a Home
+1. 🟢 **Pantalla de Bienvenida / Inicio de Sesión**
+   - El usuario abre la aplicación y puede iniciar sesión o registrarse.
+   - Una vez autenticado, se muestra la pantalla principal (Home).
+
+   ↓
+
+2. 🏠 **Pantalla Home**
+   - Muestra las principales categorías: Lugares, Eventos, Gastronomía y Transporte.
+   - Desde aquí, el usuario puede seleccionar una categoría o buscar algo específico.
+
+   ↓
+
+3. 🗺️ **Pantalla de Categoría Seleccionada**
+   - Se muestra una lista (LazyColumn o Grid) con los elementos de la categoría elegida.
+   - Cada elemento incluye imagen, nombre, descripción breve y botón "Ver más".
+
+   ↓
+
+4. 📄 **Pantalla de Detalle**
+   - Presenta la información completa del lugar o evento: imagen, descripción, ubicación, horarios, etc.
+   - Permite agregar el elemento a la lista de favoritos.
+
+   ↓
+
+5. 💖 **Guardar en Favoritos**
+   - Al presionar el botón “❤️ Agregar a Favoritos”, el elemento se almacena en el perfil del usuario.
+   - El usuario puede visualizar luego sus elementos guardados.
+
+   ↓
+
+6. 👤 **Pantalla de Favoritos / Perfil**
+   - Muestra todos los elementos guardados por el usuario.
+   - Permite ver detalles de cada uno o eliminarlos de favoritos.
+   - También incluye acceso al perfil y la opción “Cerrar sesión”.
+
+   ↓
+
+7. 🔙 **Regresar a Home**
+   - Desde cualquier pantalla, el usuario puede volver a la pantalla principal mediante el menú inferior (Bottom Navigation Bar).
+
+## 5. link del figma
+ https://www.figma.com/make/DkiOcsjvkfK7sXeDnos4Vz/TravelMarket-App-Prototype?node-id=0-1&t=pHkgCxXEx7lFh0jg-1    
 

@@ -47,17 +47,7 @@ Su objetivo es centralizar la información de viaje en un solo lugar, ofreciendo
 
 **Estructura general de pantallas:**
 
-Pantalla de Bienvenida
-↓
-Pantalla Home
-↓
-Selección de Categoría
-↓
-Pantalla de Detalle
-↓
-Ver en Mapa (abre Google Maps)
-↓
-Guardar en Favoritos
+Pantalla de Bienvenida -> Pantalla Home -> Selección de Categoría -> Pantalla de Detalle -> Ver en Mapa (abre Google Maps) -> Guardar en Favoritos
 ↓
 Pantalla de Favoritos
 ↓

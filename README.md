@@ -90,7 +90,7 @@ Su objetivo es centralizar la información de viaje en un solo lugar, ofreciendo
 ## 5. link del figma
  https://www.figma.com/make/DkiOcsjvkfK7sXeDnos4Vz/TravelMarket-App-Prototype?node-id=0-1&t=pHkgCxXEx7lFh0jg-1    
 
---
+---
 
 Día 2
 
@@ -120,8 +120,6 @@ Se agregaron las dependencias necesarias para el proyecto
 Se creó la estructura de paquetes siguiendo arquitectura MVVM:
 
 <img width="297" height="527" alt="image" src="https://github.com/user-attachments/assets/7ac17ffe-2ac4-4f4d-87ab-7a1579f42007" />
-
-text
 
 **Cumple:** RF07 - Arquitectura organizada con paquetes ui, data, model y navigation
 
@@ -154,11 +152,9 @@ Se configuró la estructura base del sistema de navegación sin implementar las 
 
 Se configuró el repositorio con 3 ramas principales:
 
-main → Rama principal (producción)
-├── lopez → Rama de Roberto Lopez
-└── arnold → Rama de Arnold Alva
-
-text
+main → Rama principal 
+lopez → Rama de Roberto Lopez
+arnold → Rama de Arnold Alva
 
 ### Configuración realizada:
 
@@ -178,7 +174,6 @@ lopez
 Arnold Alva
 arnold
 
-text
 
 **Flujo de trabajo implementado**
 - Cada integrante trabaja en su rama personal

@@ -119,29 +119,7 @@ Se agregaron las dependencias necesarias para el proyecto
 
 Se creó la estructura de paquetes siguiendo arquitectura MVVM:
 
-📁 com.leon.travelmarket/
-│
-├── 📁 data/ → Capa de datos
-│ ├── 📁 dao/ → Acceso a base de datos
-│ ├── 📁 db/ → Configuración Room Database
-│ ├── 📁 model/ → Entidades de datos
-│ └── 📁 repository/ → Repositorios
-│
-├── 📁 presentation/ → Capa de presentación
-│ ├── 📁 screens/ → Pantallas de la app
-│ │ ├── 📁 inicio/ → HOME (RF10)
-│ │ ├── 📁 explorar/
-│ │ ├── 📁 detalle/ → DETALLE (RF10)
-│ │ ├── 📁 categorias/
-│ │ ├── 📁 perfil/ → PERFIL (RF10)
-│ │ └── 📁 favoritos/
-│ ├── 📁 components/ → Componentes reutilizables
-│ ├── 📁 navigation/ → Sistema de navegación
-│ └── 📁 ui.theme/ → Temas y estilos
-│
-├── 📁 viewmodel/ → ViewModels
-│
-└── MainActivity.kt → Actividad principal
+<img width="297" height="527" alt="image" src="https://github.com/user-attachments/assets/7ac17ffe-2ac4-4f4d-87ab-7a1579f42007" />
 
 text
 

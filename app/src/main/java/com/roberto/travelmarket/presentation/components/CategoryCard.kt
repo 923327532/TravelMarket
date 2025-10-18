@@ -8,6 +8,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
@@ -25,15 +26,15 @@ fun CategoryCard(
 ) {
     Column(
         modifier = modifier
+            .width(80.dp)
             .clickable { onClick() }
-            .padding(8.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+            .padding(vertical = 4.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Círculo con icono
         Box(
             modifier = Modifier
                 .size(64.dp)
+                .shadow(elevation = 4.dp, shape = CircleShape)
                 .background(backgroundColor, CircleShape),
             contentAlignment = Alignment.Center
         ) {
@@ -47,12 +48,18 @@ fun CategoryCard(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Nombre de la categoría
         Text(
             text = title,
-            fontSize = 12.sp,
+            fontSize = 13.sp,
             fontWeight = FontWeight.Medium,
             color = Color(0xFF212121)
         )
+
+        Text(
+            text = count,
+            fontSize = 11.sp,
+            color = Color(0xFF9E9E9E)
+        )
     }
 }
+

@@ -16,17 +16,18 @@ fun SearchBar(
     placeholder: String = "Buscar por nombre o categoría...",
     onSearch: (String) -> Unit
 ) {
-    var searchText by remember { mutableStateOf("") }  // ← AQUÍ ESTÁ EL FIX
+    var searchText by remember { mutableStateOf("") }
 
     OutlinedTextField(
-        value = searchText,  // ← DEBE USAR EL ESTADO LOCAL
+        value = searchText,
         onValueChange = { newText ->
-            searchText = newText  // ← ACTUALIZA EL ESTADO LOCAL
-            onSearch(newText)     // ← Y NOTIFICA AL PADRE
+            searchText = newText
+            onSearch(newText)
         },
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
+
         placeholder = {
             Text(placeholder, color = Color(0xFF9E9E9E))
         },

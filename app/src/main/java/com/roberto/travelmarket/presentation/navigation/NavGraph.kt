@@ -6,7 +6,15 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.roberto.travelmarket.presentation.screens.acercade.AcercaDeScreen
+import com.roberto.travelmarket.presentation.screens.categorias.EventosScreen
+import com.roberto.travelmarket.presentation.screens.categorias.GastronomiaScreen
+import com.roberto.travelmarket.presentation.screens.categorias.LugaresScreen
+import com.roberto.travelmarket.presentation.screens.categorias.TransporteScreen
+import com.roberto.travelmarket.presentation.screens.detalle.DetalleEventoScreen
+import com.roberto.travelmarket.presentation.screens.detalle.DetalleGastronomiaScreen
 import com.roberto.travelmarket.presentation.screens.detalle.DetalleLugarScreen
+import com.roberto.travelmarket.presentation.screens.detalle.DetalleTransporteScreen
 import com.roberto.travelmarket.presentation.screens.inicio.InicioScreen
 
 @Composable
@@ -15,51 +23,51 @@ fun NavGraph(navController: NavHostController) {
         navController = navController,
         startDestination = Screen.Inicio.route
     ) {
-        // Pantalla de Inicio (HOME) - RF11, RF12, RF14
+        // ==================== PANTALLA PRINCIPAL ====================
+
         composable(Screen.Inicio.route) {
             InicioScreen(navController = navController)
         }
 
-        // Pantalla Explorar (Pendiente - Día 4)
+        composable(Screen.AcercaDe.route) {
+            AcercaDeScreen(navController)
+        }
+
+        // ==================== PENDIENTES (ARNOLD) ====================
+
         composable(Screen.Explorar.route) {
             // TODO: ExplorarScreen(navController = navController)
         }
 
-        // Pantalla Favoritos (Pendiente - Día 5)
         composable(Screen.Favoritos.route) {
             // TODO: FavoritosScreen(navController = navController)
         }
 
-        // Pantalla Perfil (Pendiente - Día 5)
         composable(Screen.Perfil.route) {
             // TODO: PerfilScreen(navController = navController)
         }
 
-        // ==================== CATEGORÍAS ====================
+        // ==================== CATEGORÍAS (ROBERTO - TUS PANTALLAS) ====================
 
-        // Lugares (Pendiente - Día 4)
         composable(Screen.Lugares.route) {
-            // TODO: LugaresScreen(navController = navController)
+            LugaresScreen(navController = navController)
         }
 
-        // Eventos (Pendiente - Día 4)
         composable(Screen.Eventos.route) {
-            // TODO: EventosScreen(navController = navController)
+            EventosScreen(navController = navController)
         }
 
-        // Gastronomía (Pendiente - Día 4)
         composable(Screen.Gastronomia.route) {
-            // TODO: GastronomiaScreen(navController = navController)
+            GastronomiaScreen(navController = navController)
         }
 
-        // Transporte (Pendiente - Día 4)
         composable(Screen.Transporte.route) {
-            // TODO: TransporteScreen(navController = navController)
+            TransporteScreen(navController = navController)
         }
 
-        // ==================== DETALLES CON PARÁMETROS ====================
+        // ==================== DETALLES (ROBERTO - TUS PANTALLAS) ====================
 
-        // Detalle Lugar - RF14 (HOY)
+        // Detalle Lugar
         composable(
             route = Screen.DetalleLugar.route,
             arguments = listOf(
@@ -73,7 +81,7 @@ fun NavGraph(navController: NavHostController) {
             )
         }
 
-        // Detalle Evento (Pendiente - Día 4)
+        // Detalle Evento
         composable(
             route = Screen.DetalleEvento.route,
             arguments = listOf(
@@ -81,10 +89,13 @@ fun NavGraph(navController: NavHostController) {
             )
         ) { backStackEntry ->
             val eventoId = backStackEntry.arguments?.getInt("id") ?: 0
-            // TODO: DetalleEventoScreen(eventoId, navController)
+            DetalleEventoScreen(
+                eventoId = eventoId,
+                navController = navController
+            )
         }
 
-        // Detalle Gastronomía (Pendiente - Día 4)
+        // Detalle Gastronomía
         composable(
             route = Screen.DetalleGastronomia.route,
             arguments = listOf(
@@ -92,10 +103,13 @@ fun NavGraph(navController: NavHostController) {
             )
         ) { backStackEntry ->
             val gastronomiaId = backStackEntry.arguments?.getInt("id") ?: 0
-            // TODO: DetalleGastronomiaScreen(gastronomiaId, navController)
+            DetalleGastronomiaScreen(
+                gastronomiaId = gastronomiaId,
+                navController = navController
+            )
         }
 
-        // Detalle Transporte (Pendiente - Día 4)
+        // Detalle Transporte
         composable(
             route = Screen.DetalleTransporte.route,
             arguments = listOf(
@@ -103,7 +117,10 @@ fun NavGraph(navController: NavHostController) {
             )
         ) { backStackEntry ->
             val transporteId = backStackEntry.arguments?.getInt("id") ?: 0
-            // TODO: DetalleTransporteScreen(transporteId, navController)
+            DetalleTransporteScreen(
+                transporteId = transporteId,
+                navController = navController
+            )
         }
     }
 }

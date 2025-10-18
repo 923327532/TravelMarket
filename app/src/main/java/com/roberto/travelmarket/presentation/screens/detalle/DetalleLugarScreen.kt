@@ -6,7 +6,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -16,7 +15,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -28,6 +26,7 @@ fun DetalleLugarScreen(
     lugarId: Int,
     navController: NavController
 ) {
+    // Datos mock según el ID
     val lugares = mapOf(
         0 to Triple("Parque de la Exposición", "Av. 28 de Julio, Lima", R.drawable.parque_exposicion),
         1 to Triple("Circuito Mágico del Agua", "Parque de la Reserva, Lima", R.drawable.circuito_magico_agua),
@@ -44,25 +43,22 @@ fun DetalleLugarScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = "Detalle",
+                        "Detalle",
                         color = Color.White,
-                        fontWeight = FontWeight.SemiBold,
-                        fontSize = 20.sp,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.fillMaxWidth()
+                        fontWeight = FontWeight.Bold
                     )
                 },
                 navigationIcon = {
                     IconButton(onClick = { navController.navigateUp() }) {
                         Icon(
-                            Icons.AutoMirrored.Filled.ArrowBack,
+                            Icons.Default.ArrowBack,
                             contentDescription = "Volver",
                             tint = Color.White
                         )
                     }
                 },
                 actions = {
-                    IconButton(onClick = { }) {
+                    IconButton(onClick = { /* Agregar a favoritos */ }) {
                         Icon(
                             Icons.Default.FavoriteBorder,
                             contentDescription = "Favorito",
@@ -71,12 +67,10 @@ fun DetalleLugarScreen(
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color(0xFF1E88E5)
-                ),
-                modifier = Modifier.height(64.dp)
+                    containerColor = Color(0xFF2196F3)
+                )
             )
-        },
-        containerColor = Color(0xFFF9FAFB)
+        }
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -84,93 +78,93 @@ fun DetalleLugarScreen(
                 .padding(paddingValues)
                 .verticalScroll(rememberScrollState())
         ) {
+            // Imagen principal (ACTUALIZADO)
             Image(
                 painter = painterResource(id = imagenResId),
                 contentDescription = titulo,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(220.dp),
+                    .height(250.dp),
                 contentScale = ContentScale.Crop
             )
 
             Column(
-                modifier = Modifier.padding(20.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
             ) {
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(16.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color.White),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
-                ) {
-                    Column(
-                        modifier = Modifier.padding(20.dp)
-                    ) {
-                        Text(
-                            text = titulo,
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color(0xFF212121)
-                        )
+                // Título (ACTUALIZADO)
+                Text(
+                    text = titulo,
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color(0xFF212121)
+                )
 
-                        Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(8.dp))
 
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Icon(
-                                Icons.Default.LocationOn,
-                                contentDescription = "Ubicación",
-                                tint = Color(0xFF1E88E5),
-                                modifier = Modifier.size(18.dp)
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text(
-                                text = ubicacion,
-                                fontSize = 14.sp,
-                                color = Color(0xFF757575)
-                            )
-                        }
-
-                        Spacer(modifier = Modifier.height(16.dp))
-
-                        Text(
-                            text = "Espacio cultural con exposiciones y eventos deportivos. Un lugar emblemático de Lima que combina historia, cultura y espacios verdes para disfrutar en familia o con amigos.",
-                            fontSize = 15.sp,
-                            color = Color(0xFF424242),
-                            lineHeight = 20.sp
-                        )
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(20.dp))
-
-                Button(
-                    onClick = { },
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1E88E5)),
-                    shape = RoundedCornerShape(12.dp),
-                    contentPadding = PaddingValues(vertical = 14.dp)
+                // Ubicación (ACTUALIZADO)
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
-                        Icons.Default.Favorite,
-                        contentDescription = null,
+                        Icons.Default.LocationOn,
+                        contentDescription = "Ubicación",
+                        tint = Color(0xFF2196F3),
                         modifier = Modifier.size(20.dp)
                     )
-                    Spacer(modifier = Modifier.width(8.dp))
+                    Spacer(modifier = Modifier.width(4.dp))
                     Text(
-                        "Agregar a Favoritos",
-                        fontSize = 15.sp,
-                        fontWeight = FontWeight.Medium
+                        text = ubicacion,
+                        fontSize = 14.sp,
+                        color = Color(0xFF757575)
                     )
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // Descripción
+                Text(
+                    text = "Espacio cultural con exposiciones y eventos deportivos. Un lugar emblemático de Lima que combina historia, cultura y espacios verdes para disfrutar en familia o con amigos.",
+                    fontSize = 14.sp,
+                    color = Color(0xFF212121),
+                    lineHeight = 20.sp
+                )
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                // Botones de acción
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    Button(
+                        onClick = { /* Agregar a favoritos */ },
+                        modifier = Modifier.weight(1f),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFF2196F3)
+                        ),
+                        shape = RoundedCornerShape(8.dp)
+                    ) {
+                        Icon(
+                            Icons.Default.Favorite,
+                            contentDescription = null,
+                            modifier = Modifier.size(20.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text("Agregar a Favoritos")
+                    }
                 }
 
                 Spacer(modifier = Modifier.height(12.dp))
 
                 OutlinedButton(
-                    onClick = { },
+                    onClick = { /* Ver en mapa */ },
                     modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(12.dp),
-                    colors = ButtonDefaults.outlinedButtonColors(contentColor = Color(0xFF1E88E5)),
-                    border = ButtonDefaults.outlinedButtonBorder.copy(width = 1.dp),
-                    contentPadding = PaddingValues(vertical = 14.dp)
+                    shape = RoundedCornerShape(8.dp),
+                    colors = ButtonDefaults.outlinedButtonColors(
+                        contentColor = Color(0xFF2196F3)
+                    )
                 ) {
                     Icon(
                         Icons.Default.Place,
@@ -178,34 +172,32 @@ fun DetalleLugarScreen(
                         modifier = Modifier.size(20.dp)
                     )
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        "Ver en mapa",
-                        fontSize = 15.sp,
-                        fontWeight = FontWeight.Medium
-                    )
+                    Text("Ver en mapa")
                 }
 
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(24.dp))
 
+                // Información adicional
                 Card(
                     modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(containerColor = Color(0xFFE3F2FD)),
-                    shape = RoundedCornerShape(16.dp),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
+                    colors = CardDefaults.cardColors(
+                        containerColor = Color(0xFFF5F5F5)
+                    ),
+                    shape = RoundedCornerShape(12.dp)
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Text(
                             "Información adicional",
                             fontSize = 16.sp,
-                            fontWeight = FontWeight.SemiBold,
-                            color = Color(0xFF1E88E5)
+                            fontWeight = FontWeight.Bold,
+                            color = Color(0xFF2196F3)
                         )
-                        Spacer(modifier = Modifier.height(8.dp))
+                        Spacer(modifier = Modifier.height(12.dp))
                         Text(
-                            text = "Esta información está disponible durante los Juegos Panamericanos. Para más detalles, consulta la aplicación oficial del evento.",
+                            "Esta información está disponible durante los Juegos Panamericanos. Para más detalles, consulta la aplicación oficial del evento.",
                             fontSize = 14.sp,
-                            color = Color(0xFF616161),
-                            lineHeight = 19.sp
+                            color = Color(0xFF757575),
+                            lineHeight = 20.sp
                         )
                     }
                 }

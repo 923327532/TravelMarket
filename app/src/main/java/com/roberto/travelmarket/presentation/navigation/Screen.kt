@@ -6,11 +6,15 @@ sealed class Screen(val route: String) {
     object Favoritos : Screen("favoritos")
     object Perfil : Screen("perfil")
 
+
     // Categorías
     object Lugares : Screen("lugares")
     object Eventos : Screen("eventos")
     object Gastronomia : Screen("gastronomia")
     object Transporte : Screen("transporte")
+
+    object AcercaDe : Screen("acerca_de")  // ✅
+
 
     // Detalle con parámetro
     object DetalleLugar : Screen("detalle_lugar/{id}") {
@@ -28,4 +32,5 @@ sealed class Screen(val route: String) {
     object DetalleTransporte : Screen("detalle_transporte/{id}") {
         fun createRoute(id: Int) = "detalle_transporte/$id"
     }
+
 }

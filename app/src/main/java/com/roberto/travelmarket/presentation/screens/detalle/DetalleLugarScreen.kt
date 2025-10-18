@@ -1,5 +1,7 @@
 package com.roberto.travelmarket.presentation.screens.detalle
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -8,11 +10,12 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -26,17 +29,52 @@ fun DetalleLugarScreen(
     lugarId: Int,
     navController: NavController
 ) {
-    // Datos mock según el ID
+    // Estado para manejar favoritos
+    var isFavorito by remember { mutableStateOf(false) }
+
+    // Contexto para abrir Google Maps
+    val context = LocalContext.current
+
+    // Datos mock con COORDENADAS REALES
     val lugares = mapOf(
-        0 to Triple("Parque de la Exposición", "Av. 28 de Julio, Lima", R.drawable.parque_exposicion),
-        1 to Triple("Circuito Mágico del Agua", "Parque de la Reserva, Lima", R.drawable.circuito_magico_agua),
-        2 to Triple("Museo Larco", "Av. Bolívar 1515, Pueblo Libre", R.drawable.museo_larco),
-        3 to Triple("Ceremonia de Apertura", "Estadio Nacional, Lima", R.drawable.ceremonia_apertura),
-        4 to Triple("Competencia de Atletismo", "Villa Deportiva Nacional", R.drawable.competencia_atletismo)
+        0 to LugarCompleto(
+            titulo = "Parque de la Exposición",
+            ubicacion = "Av. 28 de Julio, Lima",
+            imagenResId = R.drawable.parque_exposicion,
+            latitud = -12.062174252522565,
+            longitud = -77.03665759053403
+        ),
+        1 to LugarCompleto(
+            titulo = "Circuito Mágico del Agua",
+            ubicacion = "Parque de la Reserva, Lima",
+            imagenResId = R.drawable.circuito_magico_agua,
+            latitud = -12.070207588471881,
+            longitud = -77.0330425040265
+        ),
+        2 to LugarCompleto(
+            titulo = "Museo Larco",
+            ubicacion = "Av. Bolívar 1515, Pueblo Libre",
+            imagenResId = R.drawable.museo_larco,
+            latitud = -12.072390631733752,
+            longitud = -77.07110716354875
+        ),
+        3 to LugarCompleto(
+            titulo = "Ceremonia de Apertura",
+            ubicacion = "Ministerio de Cultura, Lima",
+            imagenResId = R.drawable.ceremonia_apertura,
+            latitud = -12.086670520057341,
+            longitud = -77.00188379264574
+        ),
+        4 to LugarCompleto(
+            titulo = "Competencia de Atletismo",
+            ubicacion = "Villa Deportiva Nacional",
+            imagenResId = R.drawable.competencia_atletismo,
+            latitud = -12.082123963527396,
+            longitud = -77.00420245395524
+        )
     )
 
-    val (titulo, ubicacion, imagenResId) = lugares[lugarId]
-        ?: Triple("Parque de la Exposición", "Av. 28 de Julio, Lima", R.drawable.parque_exposicion)
+    val lugarData = lugares[lugarId] ?: lugares[0]!!
 
     Scaffold(
         topBar = {
@@ -58,11 +96,13 @@ fun DetalleLugarScreen(
                     }
                 },
                 actions = {
-                    IconButton(onClick = { /* Agregar a favoritos */ }) {
+                    IconButton(onClick = {
+                        isFavorito = !isFavorito
+                    }) {
                         Icon(
-                            Icons.Default.FavoriteBorder,
+                            if (isFavorito) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
                             contentDescription = "Favorito",
-                            tint = Color.White
+                            tint = if (isFavorito) Color.Red else Color.White
                         )
                     }
                 },
@@ -78,10 +118,10 @@ fun DetalleLugarScreen(
                 .padding(paddingValues)
                 .verticalScroll(rememberScrollState())
         ) {
-            // Imagen principal (ACTUALIZADO)
+            // Imagen principal
             Image(
-                painter = painterResource(id = imagenResId),
-                contentDescription = titulo,
+                painter = painterResource(id = lugarData.imagenResId),
+                contentDescription = lugarData.titulo,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(250.dp),
@@ -93,9 +133,9 @@ fun DetalleLugarScreen(
                     .fillMaxWidth()
                     .padding(16.dp)
             ) {
-                // Título (ACTUALIZADO)
+                // Título
                 Text(
-                    text = titulo,
+                    text = lugarData.titulo,
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color(0xFF212121)
@@ -103,7 +143,7 @@ fun DetalleLugarScreen(
 
                 Spacer(modifier = Modifier.height(8.dp))
 
-                // Ubicación (ACTUALIZADO)
+                // Ubicación
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -115,7 +155,7 @@ fun DetalleLugarScreen(
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
-                        text = ubicacion,
+                        text = lugarData.ubicacion,
                         fontSize = 14.sp,
                         color = Color(0xFF757575)
                     )
@@ -139,27 +179,46 @@ fun DetalleLugarScreen(
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     Button(
-                        onClick = { /* Agregar a favoritos */ },
+                        onClick = {
+                            isFavorito = !isFavorito
+                        },
                         modifier = Modifier.weight(1f),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFF2196F3)
+                            containerColor = if (isFavorito) Color.Red else Color(0xFF2196F3)
                         ),
                         shape = RoundedCornerShape(8.dp)
                     ) {
                         Icon(
-                            Icons.Default.Favorite,
+                            if (isFavorito) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
                             contentDescription = null,
                             modifier = Modifier.size(20.dp)
                         )
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text("Agregar a Favoritos")
+                        Text(if (isFavorito) "Guardado" else "Agregar a Favoritos")
                     }
                 }
 
                 Spacer(modifier = Modifier.height(12.dp))
 
                 OutlinedButton(
-                    onClick = { /* Ver en mapa */ },
+                    onClick = {
+                        // Abrir Google Maps con coordenadas
+                        val uri = Uri.parse(
+                            "geo:${lugarData.latitud},${lugarData.longitud}?q=${lugarData.latitud},${lugarData.longitud}(${lugarData.titulo})"
+                        )
+                        val intent = Intent(Intent.ACTION_VIEW, uri)
+                        intent.setPackage("com.google.android.apps.maps")
+
+                        try {
+                            context.startActivity(intent)
+                        } catch (e: Exception) {
+                            // Si no tiene Google Maps, abrir en navegador
+                            val webUri = Uri.parse(
+                                "https://www.google.com/maps/search/?api=1&query=${lugarData.latitud},${lugarData.longitud}"
+                            )
+                            context.startActivity(Intent(Intent.ACTION_VIEW, webUri))
+                        }
+                    },
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(8.dp),
                     colors = ButtonDefaults.outlinedButtonColors(
@@ -205,3 +264,12 @@ fun DetalleLugarScreen(
         }
     }
 }
+
+// Data class para almacenar información completa del lugar
+data class LugarCompleto(
+    val titulo: String,
+    val ubicacion: String,
+    val imagenResId: Int,
+    val latitud: Double,
+    val longitud: Double
+)

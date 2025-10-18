@@ -215,3 +215,55 @@ Se verificó que la navegación base funcione correctamente entre las pantallas 
 
 **Fecha:** Día 2 del proyecto
 
+## 3. Funcionalidades Implementadas
+
+| Funcionalidad | Requisito | Estado |
+|----------------|------------|:--------:|
+| Lista dinámica con **LazyColumn** | RF11 | ✅ |
+| Búsqueda en tiempo real con filtrado | RF12 | ✅ |
+| Cuatro categorías interactivas (Lugares, Eventos, Gastronomía, Transporte) | RF12 | ✅ |
+| Cinco ítems con imágenes desde `/drawable` | RF12 | ✅ |
+| Navegación item → detalle con parámetro ID | RF14 | ✅ |
+| **TopBar** personalizada con colores Material 3 | RF13 | ✅ |
+| **BottomNavigationBar** funcional y con íconos | RF13 | ✅ |
+| Mensaje “Sin resultados” al no encontrar coincidencias | RF12 | ✅ |
+| Detalle con imágenes dinámicas según ID seleccionado | RF14 | ✅ |
+| Aplicación completa del tema y tipografía según diseño Figma | RF15 | ✅ |
+
+---
+
+## 4. Imágenes Agregadas al Proyecto
+
+- ✅ `res/drawable/parque_exposicion.jpg`  
+- ✅ `res/drawable/circuito_magico_agua.jpg`  
+- ✅ `res/drawable/museo_larco.jpg`  
+- ✅ `res/drawable/ceremonia_apertura.jpg`  
+- ✅ `res/drawable/competencia_atletismo.jpg`  
+
+---
+
+## 5. Observaciones Generales
+
+- Se completó el desarrollo visual de todas las pantallas principales del proyecto.  
+- La interfaz respeta los lineamientos de **Material Design 3** y coincide con el diseño de **Figma**.  
+- Se validó la navegación funcional entre pantallas, componentes interactivos y diseño responsivo.  
+
+---
+
+## 6. Resumen de Actividades del Día 3
+
+| Tarea | Responsable | Estado |
+|-------|--------------|:--------:|
+| Implementar `HomeScreen` con lista dinámica (LazyColumn) | Roberto Lopez | ✅ |
+| Crear `DetalleLugarScreen` con navegación desde item | Roberto Lopez | ✅ |
+| Implementar componentes reutilizables (Cards, SearchBar, Categorías) | Roberto Lopez | ✅ |
+| Aplicar estilos Material 3 y tema de color según Figma | Arnold Alva | ✅ |
+| Ajustar coherencia visual de todas las pantallas | Arnold Alva | ✅ |
+
+---
+
+**Fecha:** Día 3 del proyecto  
+
+
+
+

@@ -10,11 +10,18 @@ import com.roberto.travelmarket.data.dao.*
 import com.roberto.travelmarket.data.model.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 @Database(
-    entities = [Lugar::class, Evento::class, Gastronomia::class, Transporte::class],
-    version = 1,
+    entities = [
+        Lugar::class,
+        Evento::class,
+        Gastronomia::class,
+        Transporte::class,
+        Usuario::class
+    ],
+    version = 2,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -22,6 +29,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun eventoDao(): EventoDao
     abstract fun gastronomiaDao(): GastronomiaDao
     abstract fun transporteDao(): TransporteDao
+    abstract fun usuarioDao(): UsuarioDao
 
     companion object {
         @Volatile
@@ -34,6 +42,7 @@ abstract class AppDatabase : RoomDatabase() {
                     AppDatabase::class.java,
                     "travel_market_database"
                 )
+                    .fallbackToDestructiveMigration()
                     .addCallback(DatabaseCallback(context))
                     .build()
                 INSTANCE = instance
@@ -44,11 +53,26 @@ abstract class AppDatabase : RoomDatabase() {
         private class DatabaseCallback(
             private val context: Context
         ) : Callback() {
+            // ✅ Se ejecuta SOLO cuando se crea la DB por primera vez
             override fun onCreate(db: SupportSQLiteDatabase) {
                 super.onCreate(db)
                 INSTANCE?.let { database ->
                     CoroutineScope(Dispatchers.IO).launch {
                         populateDatabase(database, context)
+                    }
+                }
+            }
+
+            // ✅✅ AGREGADO: Se ejecuta CADA VEZ que se abre la DB
+            override fun onOpen(db: SupportSQLiteDatabase) {
+                super.onOpen(db)
+                INSTANCE?.let { database ->
+                    CoroutineScope(Dispatchers.IO).launch {
+                        // Verificar si hay lugares (si está vacío, reinsertar todo)
+                        val lugarCount = database.lugarDao().getAllLugares().first().size
+                        if (lugarCount == 0) {
+                            populateDatabase(database, context)
+                        }
                     }
                 }
             }

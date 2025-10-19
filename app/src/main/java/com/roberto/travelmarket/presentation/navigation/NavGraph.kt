@@ -1,12 +1,15 @@
 package com.roberto.travelmarket.presentation.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.roberto.travelmarket.presentation.screens.acercade.AcercaDeScreen
+import com.roberto.travelmarket.presentation.screens.auth.LoginScreen
+import com.roberto.travelmarket.presentation.screens.auth.RegistroScreen
 import com.roberto.travelmarket.presentation.screens.categorias.EventosScreen
 import com.roberto.travelmarket.presentation.screens.categorias.GastronomiaScreen
 import com.roberto.travelmarket.presentation.screens.categorias.LugaresScreen
@@ -19,18 +22,51 @@ import com.roberto.travelmarket.presentation.screens.explorar.ExplorarScreen
 import com.roberto.travelmarket.presentation.screens.favoritos.FavoritosScreen
 import com.roberto.travelmarket.presentation.screens.inicio.InicioScreen
 import com.roberto.travelmarket.presentation.screens.perfil.PerfilScreen
+import com.roberto.travelmarket.presentation.screens.tour.TourGastronomicoScreen  // ✅ AGREGAR ESTE IMPORT
+import com.roberto.travelmarket.viewmodel.AuthViewModel
 import com.roberto.travelmarket.viewmodel.FavoritosViewModel
 
 @Composable
 fun NavGraph(
     navController: NavHostController,
-    favoritosViewModel: FavoritosViewModel
+    favoritosViewModel: FavoritosViewModel,
+    authViewModel: AuthViewModel
 ) {
+    // Determinar ruta inicial según sesión
+    val startDestination = if (authViewModel.estaLogueado()) {
+        Screen.Inicio.route
+    } else {
+        Screen.Login.route
+    }
+
     NavHost(
         navController = navController,
-        startDestination = Screen.Inicio.route
+        startDestination = startDestination
     ) {
+        // AUTH
+        composable(Screen.Login.route) {
+            LoginScreen(
+                navController = navController,
+                authViewModel = authViewModel
+            )
+        }
+
+        composable(Screen.Registro.route) {
+            RegistroScreen(
+                navController = navController,
+                authViewModel = authViewModel
+            )
+        }
+
+        // MAIN
         composable(Screen.Inicio.route) {
+            LaunchedEffect(Unit) {
+                if (!authViewModel.estaLogueado()) {
+                    navController.navigate(Screen.Login.route) {
+                        popUpTo(0) { inclusive = true }
+                    }
+                }
+            }
             InicioScreen(navController = navController)
         }
 
@@ -52,10 +88,12 @@ fun NavGraph(
         composable(Screen.Perfil.route) {
             PerfilScreen(
                 navController = navController,
-                favoritosViewModel = favoritosViewModel
+                favoritosViewModel = favoritosViewModel,
+                authViewModel = authViewModel
             )
         }
 
+        // CATEGORÍAS
         composable(Screen.Lugares.route) {
             LugaresScreen(navController = navController)
         }
@@ -72,6 +110,12 @@ fun NavGraph(
             TransporteScreen(navController = navController)
         }
 
+        // ✅ TOUR GASTRONÓMICO (AGREGAR AQUÍ)
+        composable(Screen.TourGastronomico.route) {
+            TourGastronomicoScreen(navController = navController)
+        }
+
+        // DETALLE
         composable(
             route = Screen.DetalleLugar.route,
             arguments = listOf(

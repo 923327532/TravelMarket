@@ -59,7 +59,7 @@ fun ExplorarScreen(
             bottomBar = {
                 NavigationBar(
                     containerColor = Color.White,
-                    tonalElevation = 8.dp
+                    tonalElevation = 0.dp
                 ) {
                     NavigationBarItem(
                         icon = { Icon(Icons.Default.Home, contentDescription = "Inicio") },
@@ -74,7 +74,10 @@ fun ExplorarScreen(
                         onClick = { },
                         colors = NavigationBarItemDefaults.colors(
                             selectedIconColor = Color(0xFF2196F3),
-                            selectedTextColor = Color(0xFF2196F3)
+                            selectedTextColor = Color(0xFF2196F3),
+                            indicatorColor = Color.Transparent
+
+
                         )
                     )
                     NavigationBarItem(
@@ -259,7 +262,7 @@ fun ExplorarScreen(
                         modifier = Modifier.fillMaxWidth(),
                         colors = CardDefaults.cardColors(containerColor = Color(0xFFFFF3E0)),
                         shape = RoundedCornerShape(12.dp),
-                        onClick = { navController.navigate(Screen.Gastronomia.route) },
+                        onClick = { navController.navigate(Screen.TourGastronomico.route) },
                         border = BorderStroke(2.dp, Color(0xFFFF9800))
                     ) {
                         Row(

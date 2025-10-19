@@ -1,8 +1,10 @@
 package com.roberto.travelmarket.presentation.screens.favoritos
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -15,6 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -64,7 +67,7 @@ fun FavoritosScreen(
             bottomBar = {
                 NavigationBar(
                     containerColor = Color.White,
-                    tonalElevation = 8.dp
+                    tonalElevation = 0.dp  // ← SIN elevación
                 ) {
                     NavigationBarItem(
                         icon = { Icon(Icons.Default.Home, contentDescription = "Inicio") },
@@ -85,7 +88,8 @@ fun FavoritosScreen(
                         onClick = { },
                         colors = NavigationBarItemDefaults.colors(
                             selectedIconColor = Color(0xFF2196F3),
-                            selectedTextColor = Color(0xFF2196F3)
+                            selectedTextColor = Color(0xFF2196F3),
+                            indicatorColor = Color(0xFFE3F2FD)
                         )
                     )
                     NavigationBarItem(
@@ -96,63 +100,109 @@ fun FavoritosScreen(
                     )
                 }
             },
-            containerColor = Color(0xFFF5F5F5)
+            containerColor = Color.White  // ← Fondo BLANCO
         ) { paddingValues ->
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues)
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                item {
+            if (favoritos.isEmpty()) {
+                // ======= PANTALLA VACÍA (COMO FIGMA) =======
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues)
+                        .background(Color.White),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    // Círculo con corazón (IDÉNTICO AL FIGMA)
+                    Box(
+                        modifier = Modifier
+                            .size(120.dp)
+                            .background(Color(0xFFEEEEEE), CircleShape),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            Icons.Default.FavoriteBorder,
+                            contentDescription = null,
+                            modifier = Modifier.size(60.dp),
+                            tint = Color(0xFF9E9E9E)
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(24.dp))
+
+                    Text(
+                        "No tienes favoritos aún",
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color(0xFF212121)
+                    )
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    Text(
+                        "Guarda lugares, eventos y más desde su pantalla de\ndetalle para acceder rápidamente a ellos aquí.",
+                        fontSize = 14.sp,
+                        color = Color(0xFF757575),
+                        textAlign = TextAlign.Center,
+                        lineHeight = 20.sp,
+                        modifier = Modifier.padding(horizontal = 32.dp)
+                    )
+
+                    Spacer(modifier = Modifier.height(24.dp))
+
+                    Button(
+                        onClick = { navController.navigate(Screen.Inicio.route) },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFF2196F3)
+                        ),
+                        shape = RoundedCornerShape(8.dp),
+                        modifier = Modifier.padding(horizontal = 48.dp)
+                    ) {
+                        Text(
+                            "Explorar contenido",
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Medium
+                        )
+                    }
+                }
+            } else {
+                // ======= LISTA DE FAVORITOS (COMO FIGMA) =======
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues)
+                        .background(Color.White)
+                ) {
+                    // Contador de favoritos
                     Text(
                         "${favoritos.size} favorito${if (favoritos.size != 1) "s" else ""} guardado${if (favoritos.size != 1) "s" else ""}",
                         fontSize = 14.sp,
-                        color = Color(0xFF757575)
+                        color = Color(0xFF757575),
+                        modifier = Modifier.padding(16.dp)
                     )
-                }
 
-                items(favoritos.size) { index ->
-                    val item = favoritos[index]
-                    FavoritoCard(
-                        titulo = item.titulo,
-                        subtitulo = item.subtitulo,
-                        categoria = item.categoria,
-                        imagenResId = item.imagenResId,
-                        onClickDetalle = {
-                            when (item.categoria) {
-                                "Lugares" -> navController.navigate(Screen.DetalleLugar.createRoute(item.id))
-                                "Eventos" -> navController.navigate(Screen.DetalleEvento.createRoute(item.id))
-                                "Gastronomía" -> navController.navigate(Screen.DetalleGastronomia.createRoute(item.id))
-                                "Transporte" -> navController.navigate(Screen.DetalleTransporte.createRoute(item.id))
-                            }
-                        },
-                        onClickEliminar = {
-                            favoritosViewModel.quitarFavorito(item.id, item.categoria)
-                        }
-                    )
-                }
-
-                if (favoritos.isEmpty()) {
-                    item {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 64.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Icon(
-                                Icons.Default.FavoriteBorder,
-                                contentDescription = null,
-                                modifier = Modifier.size(64.dp),
-                                tint = Color(0xFF9E9E9E)
-                            )
-                            Spacer(modifier = Modifier.height(16.dp))
-                            Text(
-                                "No tienes favoritos guardados",
-                                fontSize = 16.sp,
-                                color = Color(0xFF757575)
+                    LazyColumn(
+                        modifier = Modifier.fillMaxSize(),
+                        verticalArrangement = Arrangement.spacedBy(12.dp),
+                        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
+                    ) {
+                        items(favoritos.size) { index ->
+                            val item = favoritos[index]
+                            FavoritoCard(
+                                titulo = item.titulo,
+                                subtitulo = item.subtitulo,
+                                categoria = item.categoria,
+                                imagenResId = item.imagenResId,
+                                onClickDetalle = {
+                                    when (item.categoria) {
+                                        "Lugares" -> navController.navigate(Screen.DetalleLugar.createRoute(item.id))
+                                        "Eventos" -> navController.navigate(Screen.DetalleEvento.createRoute(item.id))
+                                        "Gastronomía" -> navController.navigate(Screen.DetalleGastronomia.createRoute(item.id))
+                                        "Transporte" -> navController.navigate(Screen.DetalleTransporte.createRoute(item.id))
+                                    }
+                                },
+                                onClickEliminar = {
+                                    favoritosViewModel.quitarFavorito(item.id, item.categoria)
+                                }
                             )
                         }
                     }
@@ -219,7 +269,7 @@ fun FavoritoCard(
                     )
                 }
                 Spacer(modifier = Modifier.height(8.dp))
-                TextButton(onClick = onClickDetalle) {
+                TextButton(onClick = onClickDetalle, contentPadding = PaddingValues(0.dp)) {
                     Text("Ver detalle →", color = Color(0xFF2196F3), fontSize = 12.sp)
                 }
             }

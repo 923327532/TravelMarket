@@ -8,10 +8,12 @@ import androidx.compose.material3.Surface
 import androidx.navigation.compose.rememberNavController
 import com.roberto.travelmarket.presentation.navigation.NavGraph
 import com.roberto.travelmarket.ui.theme.TravelMarketTheme
+import com.roberto.travelmarket.viewmodel.AuthViewModel
 import com.roberto.travelmarket.viewmodel.FavoritosViewModel
 
 class MainActivity : ComponentActivity() {
     private val favoritosViewModel: FavoritosViewModel by viewModels()
+    private val authViewModel: AuthViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,7 +23,8 @@ class MainActivity : ComponentActivity() {
                     val navController = rememberNavController()
                     NavGraph(
                         navController = navController,
-                        favoritosViewModel = favoritosViewModel
+                        favoritosViewModel = favoritosViewModel,
+                        authViewModel = authViewModel
                     )
                 }
             }

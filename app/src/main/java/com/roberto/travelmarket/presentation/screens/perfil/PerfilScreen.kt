@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.roberto.travelmarket.presentation.navigation.Screen
+import com.roberto.travelmarket.viewmodel.AuthViewModel
 import com.roberto.travelmarket.viewmodel.FavoritosViewModel
 import kotlinx.coroutines.launch
 
@@ -27,12 +28,14 @@ import kotlinx.coroutines.launch
 @Composable
 fun PerfilScreen(
     navController: NavController,
-    favoritosViewModel: FavoritosViewModel
+    favoritosViewModel: FavoritosViewModel,
+    authViewModel: AuthViewModel
 ) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
     val favoritos by favoritosViewModel.favoritos.collectAsState()
+    val usuario by authViewModel.usuarioActual.collectAsState()
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -66,7 +69,7 @@ fun PerfilScreen(
             bottomBar = {
                 NavigationBar(
                     containerColor = Color.White,
-                    tonalElevation = 8.dp
+                    tonalElevation = 0.dp
                 ) {
                     NavigationBarItem(
                         icon = { Icon(Icons.Default.Home, contentDescription = "Inicio") },
@@ -93,7 +96,9 @@ fun PerfilScreen(
                         onClick = { },
                         colors = NavigationBarItemDefaults.colors(
                             selectedIconColor = Color(0xFF2196F3),
-                            selectedTextColor = Color(0xFF2196F3)
+                            selectedTextColor = Color(0xFF2196F3),
+                            indicatorColor = Color.Transparent
+
                         )
                     )
                 }
@@ -118,6 +123,15 @@ fun PerfilScreen(
                                 .padding(horizontal = 24.dp),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
+                            // ✅ INICIALES DINÁMICAS DEL USUARIO
+                            val iniciales = usuario?.nombreCompleto
+                                ?.split(" ")
+                                ?.mapNotNull { it.firstOrNull() }
+                                ?.take(2)
+                                ?.joinToString("")
+                                ?.uppercase()
+                                ?: "JD"
+
                             Box(
                                 modifier = Modifier
                                     .size(70.dp)
@@ -126,7 +140,7 @@ fun PerfilScreen(
                                 contentAlignment = Alignment.Center
                             ) {
                                 Text(
-                                    "JD",
+                                    iniciales,
                                     fontSize = 28.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = Color.White
@@ -135,8 +149,9 @@ fun PerfilScreen(
 
                             Spacer(modifier = Modifier.height(12.dp))
 
+                            // ✅ NOMBRE DINÁMICO DEL USUARIO
                             Text(
-                                "Juan Pérez",
+                                usuario?.nombreCompleto ?: "Usuario",
                                 fontSize = 17.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = Color.White
@@ -214,10 +229,11 @@ fun PerfilScreen(
                                 .fillMaxWidth()
                                 .padding(16.dp)
                         ) {
+                            // ✅ EMAIL DINÁMICO
                             PerfilMenuItem(
                                 icon = Icons.Outlined.Email,
                                 title = "Email",
-                                subtitle = "juan.perez@email.com",
+                                subtitle = usuario?.email ?: "No disponible",
                                 onClick = { }
                             )
 
@@ -226,10 +242,11 @@ fun PerfilScreen(
                                 color = Color(0xFFEEEEEE)
                             )
 
+                            // ✅ FECHA DE REGISTRO DINÁMICA
                             PerfilMenuItem(
                                 icon = Icons.Outlined.CalendarToday,
                                 title = "Miembro desde",
-                                subtitle = "Octubre 2025",
+                                subtitle = usuario?.fechaRegistro ?: "Octubre 2025",
                                 onClick = { }
                             )
                         }
@@ -290,8 +307,14 @@ fun PerfilScreen(
                 }
 
                 item {
+                    // ✅ BOTÓN CERRAR SESIÓN FUNCIONAL
                     OutlinedButton(
-                        onClick = { },
+                        onClick = {
+                            authViewModel.cerrarSesion()
+                            navController.navigate(Screen.Login.route) {
+                                popUpTo(0) { inclusive = true }
+                            }
+                        },
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 20.dp),

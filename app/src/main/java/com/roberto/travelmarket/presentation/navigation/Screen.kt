@@ -1,9 +1,16 @@
 package com.roberto.travelmarket.presentation.navigation
 
 sealed class Screen(val route: String) {
+
+    // Auth
+    object Login : Screen("login")
+    object Registro : Screen("registro")
     object Inicio : Screen("inicio")
     object Explorar : Screen("explorar")
     object Favoritos : Screen("favoritos")
+    // En tu archivo Screen.kt
+    object TourGastronomico : Screen("tour_gastronomico")
+
     object Perfil : Screen("perfil")
 
 

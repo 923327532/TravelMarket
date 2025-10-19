@@ -23,6 +23,7 @@ fun ItemCard(
     titulo: String,
     subtitulo: String,
     imagenResId: Int,
+    ubicacion: String = "",  // ← PARÁMETRO OPCIONAL (con valor por defecto)
     onClick: () -> Unit
 ) {
     Card(

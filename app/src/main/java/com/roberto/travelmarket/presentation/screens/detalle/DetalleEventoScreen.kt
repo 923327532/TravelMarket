@@ -25,21 +25,26 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.roberto.travelmarket.R
 import com.roberto.travelmarket.viewmodel.EventoViewModel
+import com.roberto.travelmarket.viewmodel.FavoritosViewModel
+import com.roberto.travelmarket.viewmodel.ItemFavorito
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetalleEventoScreen(
     eventoId: Int,
     navController: NavController,
+    favoritosViewModel: FavoritosViewModel,
     viewModel: EventoViewModel = viewModel()
 ) {
     val context = LocalContext.current
-    var isFavorito by remember { mutableStateOf(false) }
 
     val eventos by viewModel.allEventos.collectAsState()
     val evento = remember(eventos, eventoId) {
         eventos.find { it.id == eventoId } ?: eventos.firstOrNull()
     }
+
+    val favoritos by favoritosViewModel.favoritos.collectAsState()
+    val esFavorito = favoritos.any { it.id == eventoId && it.categoria == "Eventos" }
 
     evento?.let { eventoData ->
         Scaffold(
@@ -62,11 +67,25 @@ fun DetalleEventoScreen(
                         }
                     },
                     actions = {
-                        IconButton(onClick = { isFavorito = !isFavorito }) {
+                        IconButton(onClick = {
+                            if (esFavorito) {
+                                favoritosViewModel.quitarFavorito(eventoId, "Eventos")
+                            } else {
+                                favoritosViewModel.agregarFavorito(
+                                    ItemFavorito(
+                                        id = eventoId,
+                                        titulo = eventoData.nombre,
+                                        subtitulo = "Evento deportivo",
+                                        categoria = "Eventos",
+                                        imagenResId = eventoData.imagenResId
+                                    )
+                                )
+                            }
+                        }) {
                             Icon(
-                                if (isFavorito) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                                if (esFavorito) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
                                 contentDescription = "Favorito",
-                                tint = if (isFavorito) Color.Red else Color.White
+                                tint = if (esFavorito) Color.Red else Color.White
                             )
                         }
                     },
@@ -83,7 +102,6 @@ fun DetalleEventoScreen(
                     .verticalScroll(rememberScrollState())
                     .background(Color(0xFFF5F5F5))
             ) {
-                // Imagen principal con badge
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -96,7 +114,6 @@ fun DetalleEventoScreen(
                         contentScale = ContentScale.Crop
                     )
 
-                    // Badge de categoría
                     Surface(
                         modifier = Modifier
                             .align(Alignment.TopEnd)
@@ -114,7 +131,6 @@ fun DetalleEventoScreen(
                     }
                 }
 
-                // Contenido
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -129,7 +145,6 @@ fun DetalleEventoScreen(
                             .fillMaxWidth()
                             .padding(20.dp)
                     ) {
-                        // Título
                         Text(
                             text = eventoData.nombre,
                             fontSize = 22.sp,
@@ -139,7 +154,6 @@ fun DetalleEventoScreen(
 
                         Spacer(modifier = Modifier.height(16.dp))
 
-                        // Ubicación
                         Row(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
@@ -159,7 +173,6 @@ fun DetalleEventoScreen(
 
                         Spacer(modifier = Modifier.height(20.dp))
 
-                        // Descripción
                         Text(
                             text = eventoData.descripcion,
                             fontSize = 15.sp,
@@ -169,30 +182,42 @@ fun DetalleEventoScreen(
 
                         Spacer(modifier = Modifier.height(24.dp))
 
-                        // Botón Favoritos
                         Button(
-                            onClick = { isFavorito = !isFavorito },
+                            onClick = {
+                                if (esFavorito) {
+                                    favoritosViewModel.quitarFavorito(eventoId, "Eventos")
+                                } else {
+                                    favoritosViewModel.agregarFavorito(
+                                        ItemFavorito(
+                                            id = eventoId,
+                                            titulo = eventoData.nombre,
+                                            subtitulo = "Evento deportivo",
+                                            categoria = "Eventos",
+                                            imagenResId = eventoData.imagenResId
+                                        )
+                                    )
+                                }
+                            },
                             modifier = Modifier.fillMaxWidth(),
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = Color(0xFF2196F3)
+                                containerColor = if (esFavorito) Color(0xFFE57373) else Color(0xFF2196F3)
                             ),
                             shape = RoundedCornerShape(8.dp)
                         ) {
                             Icon(
-                                if (isFavorito) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                                if (esFavorito) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
                                 contentDescription = null,
                                 modifier = Modifier.size(20.dp)
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
-                                if (isFavorito) "Eliminar de Favoritos" else "Agregar a Favoritos",
+                                if (esFavorito) "Quitar de Favoritos" else "Agregar a Favoritos",
                                 fontSize = 15.sp
                             )
                         }
 
                         Spacer(modifier = Modifier.height(12.dp))
 
-                        // Botón Ver en mapa
                         OutlinedButton(
                             onClick = {
                                 val gmmIntentUri = Uri.parse("geo:${eventoData.latitud},${eventoData.longitud}?q=${eventoData.latitud},${eventoData.longitud}(${eventoData.nombre})")
@@ -220,7 +245,6 @@ fun DetalleEventoScreen(
 
                         Spacer(modifier = Modifier.height(20.dp))
 
-                        // Información adicional
                         Surface(
                             modifier = Modifier.fillMaxWidth(),
                             color = Color(0xFFF5F5F5),

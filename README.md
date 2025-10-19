@@ -215,3 +215,247 @@ Se verificó que la navegación base funcione correctamente entre las pantallas 
 
 **Fecha:** Día 2 del proyecto
 
+---
+
+Día 3
+
+---
+
+## 1. Estado de Requisitos Funcionales
+
+| Código | Requisito | Estado | Responsable |
+|:-------:|------------|:--------:|--------------|
+| **RF11** | LazyColumn con lista de elementos en pantalla principal | ✅ Completado | Roberto Lopez |
+| **RF12** | Imágenes, textos y botones interactivos | ✅ Completado | Roberto Lopez |
+| **RF13** | Diseño respeta Material 3 | ✅ Completado | Arnold Alva |
+| **RF14** | Navegación desde lista hacia detalle | ✅ Completado | Roberto Lopez |
+| **RF15** | Interfaz visual coherente con Figma | ✅ Completado | Arnold Alva |
+
+---
+
+## 2. Trabajo Realizado
+
+### 1. Theme y Estilos
+- ✅ `presentation/ui/theme/Color.kt` – Paleta de colores Material 3  
+- ✅ `presentation/ui/theme/Theme.kt` – Configuración de LightColorScheme y tipografía según Figma  
+
+### 2. Componentes Reutilizables
+- ✅ `presentation/components/CategoryCard.kt` – Cuatro categorías circulares clickeables (Lugares, Eventos, Gastronomía, Transporte)  
+- ✅ `presentation/components/ItemCard.kt` – Cards con imagen, título y ubicación  
+- ✅ `presentation/components/SearchBar.kt` – Barra de búsqueda con filtrado en tiempo real  
+
+### 3. Pantallas
+- ✅ `presentation/screens/inicio/InicioScreen.kt` – Pantalla principal completa con lista dinámica, búsqueda y categorías  
+- ✅ `presentation/screens/detalle/DetalleLugarScreen.kt` – Pantalla de detalle con imágenes dinámicas y botón de acción  
+
+### 4. Navegación
+- ✅ `presentation/navigation/Screen.kt` – Rutas configuradas con parámetros  
+- ✅ `presentation/navigation/NavGraph.kt` – Flujo de navegación Home → Detalle totalmente funcional  
+
+### 5. Configuración
+- ✅ `build.gradle.kts` – Dependencias actualizadas (Material Icons Extended, Room, Coil)  
+
+---
+
+## 3. Funcionalidades Implementadas
+
+| Funcionalidad | Requisito | Estado |
+|----------------|------------|:--------:|
+| Lista dinámica con **LazyColumn** | RF11 | ✅ |
+| Búsqueda en tiempo real con filtrado | RF12 | ✅ |
+| Cuatro categorías interactivas (Lugares, Eventos, Gastronomía, Transporte) | RF12 | ✅ |
+| Cinco ítems con imágenes desde `/drawable` | RF12 | ✅ |
+| Navegación item → detalle con parámetro ID | RF14 | ✅ |
+| **TopBar** personalizada con colores Material 3 | RF13 | ✅ |
+| **BottomNavigationBar** funcional y con íconos | RF13 | ✅ |
+| Mensaje “Sin resultados” al no encontrar coincidencias | RF12 | ✅ |
+| Detalle con imágenes dinámicas según ID seleccionado | RF14 | ✅ |
+| Aplicación completa del tema y tipografía según diseño Figma | RF15 | ✅ |
+
+---
+
+## 4. Imágenes Agregadas al Proyecto
+
+- ✅ `res/drawable/parque_exposicion.jpg`  
+- ✅ `res/drawable/circuito_magico_agua.jpg`  
+- ✅ `res/drawable/museo_larco.jpg`  
+- ✅ `res/drawable/ceremonia_apertura.jpg`  
+- ✅ `res/drawable/competencia_atletismo.jpg`  
+
+---
+
+## 5. Observaciones Generales
+
+- Se completó el desarrollo visual de todas las pantallas principales del proyecto.  
+- La interfaz respeta los lineamientos de **Material Design 3** y coincide con el diseño de **Figma**.  
+- Se validó la navegación funcional entre pantallas, componentes interactivos y diseño responsivo.  
+
+---
+
+## 6. Resumen de Actividades del Día 3
+
+| Tarea | Responsable | Estado |
+|-------|--------------|:--------:|
+| Implementar `HomeScreen` con lista dinámica (LazyColumn) | Roberto Lopez | ✅ |
+| Crear `DetalleLugarScreen` con navegación desde item | Roberto Lopez | ✅ |
+| Implementar componentes reutilizables (Cards, SearchBar, Categorías) | Roberto Lopez | ✅ |
+| Aplicar estilos Material 3 y tema de color según Figma | Arnold Alva | ✅ |
+| Ajustar coherencia visual de todas las pantallas | Arnold Alva | ✅ |
+
+---
+
+**Fecha:** Día 3 del proyecto  
+
+
+# Día 4
+
+---
+
+## 1. Implementación de Room Database (RF11)
+
+### Configuración de Base de Datos Local
+
+Se implementó Room Database para persistencia de datos con 4 entidades y pre-carga de 10 registros de ejemplo.
+
+**Archivos creados:**
+- `data/model/` - 4 entidades (Lugar, Evento, Gastronomia, Transporte)
+- `data/dao/` - 4 DAOs con operaciones CRUD
+- `data/db/AppDatabase.kt` - Base de datos con Singleton
+- `data/repository/` - 5 repositorios MVVM
+
+**Cumple:** RF11 - Room Database funcional con datos de ejemplo
+
+**Responsable:** Roberto Lopez
+
+---
+
+## 2. Pantallas de Categorías (RF12)
+
+### Implementación de 4 Pantallas con Filtros
+
+Se crearon pantallas para cada categoría con búsqueda en tiempo real y filtros dropdown.
+
+**Pantallas creadas:**
+
+| Pantalla | Características | Responsable |
+|----------|-----------------|-------------|
+| LugaresScreen | Búsqueda, filtros, navegación a detalle | Roberto Lopez |
+| EventosScreen | Búsqueda, filtros, navegación a detalle | Roberto Lopez |
+| GastronomiaScreen | Búsqueda, filtros, navegación a detalle | Roberto Lopez |
+| TransporteScreen | Búsqueda, filtros, navegación a detalle | Roberto Lopez |
+
+**Funcionalidades:**
+- ✅ Barra de búsqueda en tiempo real
+- ✅ Dropdown de filtros
+- ✅ LazyColumn con ItemCard
+- ✅ Navegación a pantalla de detalle
+
+**Cumple:** RF12 - Pantallas de categorías funcionales
+
+---
+
+## 3. Pantallas Complementarias (RF13)
+
+### Navegación Principal
+
+Se implementaron las 3 pantallas del BottomNavigationBar.
+
+**Pantallas creadas:**
+
+| Pantalla | Función | Responsable |
+|----------|---------|-------------|
+| ExplorarScreen | Búsqueda avanzada de contenido | Arnold Alva |
+| FavoritosScreen | Lista de elementos favoritos | Arnold Alva |
+| PerfilScreen | Información del usuario | Arnold Alva |
+
+**Cumple:** RF13 - Pantallas de navegación principal completadas
+
+---
+
+## 4. Pantalla Acerca de (RF14)
+
+----
+### Información de la App
+
+Se creó la pantalla con información sobre TravelMarket.
+
+**Archivo creado:**
+- `presentation/screens/acercade/AcercaDeScreen.kt`
+
+**Contenido:**
+- Descripción de la aplicación
+- Integrantes del equipo
+- Versión y contacto
+
+**Cumple:** RF14 - Pantalla Acerca de implementada
+
+
+---
+
+## 5. Componentes UI Reutilizables (RF15)
+
+### Creación de Componentes
+
+Se implementaron 4 componentes para la interfaz de usuario.
+
+**Componentes creados:**
+
+| Componente | Uso |
+|------------|-----|
+| ItemCard | Tarjetas para listas de elementos |
+| CategoryCard | Círculos de categorías en inicio |
+| SearchBar | Barra de búsqueda con filtros |
+| AppNavigationDrawer | Menú lateral de navegación |
+
+**Cumple:** RF15 - Componentes UI creados
+
+---
+
+## 6. Recursos Gráficos (RF16)
+
+### Imágenes Agregadas
+
+Se incorporaron 10 imágenes al proyecto en formato JPG/JPEG.
+
+**Imágenes en res/drawable:**
+- 3 Lugares (Parque Exposición, Circuito Mágico, Museo Larco)
+- 3 Eventos (Ceremonia Apertura, Competencia, Gala Clausura)
+- 2 Gastronomía (Central, Mercado Surquillo)
+- 2 Transporte (Metropolitano, Metro)
+
+**Cumple:** RF16 - Recursos gráficos completos
+
+
+---
+
+## 7. Actualización del Sistema de Navegación (RF17)
+
+### NavGraph Completo
+
+Se actualizó el NavGraph con todas las rutas de navegación.
+
+**Rutas implementadas:**
+- 4 Pantallas de categorías
+- 3 Pantallas de navegación principal
+- 1 Pantalla Acerca de
+
+**Total:** 8 pantallas navegables
+
+**Cumple:** RF17 - Sistema de navegación completo
+
+**Responsables:** Roberto Lopez + Arnold Alva
+
+---
+
+## 8. Control de Versiones (RF18)
+
+### Merge a Main
+
+Se realizó el merge de las ramas individuales a main.
+
+**Estadísticas del merge:**
+
+**Fecha:** Día 4 del proyecto
+
+
+

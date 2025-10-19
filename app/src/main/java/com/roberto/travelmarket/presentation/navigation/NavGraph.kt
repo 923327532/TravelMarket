@@ -15,16 +15,21 @@ import com.roberto.travelmarket.presentation.screens.detalle.DetalleEventoScreen
 import com.roberto.travelmarket.presentation.screens.detalle.DetalleGastronomiaScreen
 import com.roberto.travelmarket.presentation.screens.detalle.DetalleLugarScreen
 import com.roberto.travelmarket.presentation.screens.detalle.DetalleTransporteScreen
+import com.roberto.travelmarket.presentation.screens.explorar.ExplorarScreen
+import com.roberto.travelmarket.presentation.screens.favoritos.FavoritosScreen
 import com.roberto.travelmarket.presentation.screens.inicio.InicioScreen
+import com.roberto.travelmarket.presentation.screens.perfil.PerfilScreen
+import com.roberto.travelmarket.viewmodel.FavoritosViewModel
 
 @Composable
-fun NavGraph(navController: NavHostController) {
+fun NavGraph(
+    navController: NavHostController,
+    favoritosViewModel: FavoritosViewModel
+) {
     NavHost(
         navController = navController,
         startDestination = Screen.Inicio.route
     ) {
-        // ==================== PANTALLA PRINCIPAL ====================
-
         composable(Screen.Inicio.route) {
             InicioScreen(navController = navController)
         }
@@ -33,21 +38,23 @@ fun NavGraph(navController: NavHostController) {
             AcercaDeScreen(navController)
         }
 
-        // ==================== PENDIENTES (ARNOLD) ====================
-
         composable(Screen.Explorar.route) {
-            // TODO: ExplorarScreen(navController = navController)
+            ExplorarScreen(navController = navController)
         }
 
         composable(Screen.Favoritos.route) {
-            // TODO: FavoritosScreen(navController = navController)
+            FavoritosScreen(
+                navController = navController,
+                favoritosViewModel = favoritosViewModel
+            )
         }
 
         composable(Screen.Perfil.route) {
-            // TODO: PerfilScreen(navController = navController)
+            PerfilScreen(
+                navController = navController,
+                favoritosViewModel = favoritosViewModel
+            )
         }
-
-        // ==================== CATEGORÍAS (ROBERTO - TUS PANTALLAS) ====================
 
         composable(Screen.Lugares.route) {
             LugaresScreen(navController = navController)
@@ -65,9 +72,6 @@ fun NavGraph(navController: NavHostController) {
             TransporteScreen(navController = navController)
         }
 
-        // ==================== DETALLES (ROBERTO - TUS PANTALLAS) ====================
-
-        // Detalle Lugar
         composable(
             route = Screen.DetalleLugar.route,
             arguments = listOf(
@@ -77,11 +81,11 @@ fun NavGraph(navController: NavHostController) {
             val lugarId = backStackEntry.arguments?.getInt("id") ?: 0
             DetalleLugarScreen(
                 lugarId = lugarId,
-                navController = navController
+                navController = navController,
+                favoritosViewModel = favoritosViewModel
             )
         }
 
-        // Detalle Evento
         composable(
             route = Screen.DetalleEvento.route,
             arguments = listOf(
@@ -91,11 +95,11 @@ fun NavGraph(navController: NavHostController) {
             val eventoId = backStackEntry.arguments?.getInt("id") ?: 0
             DetalleEventoScreen(
                 eventoId = eventoId,
-                navController = navController
+                navController = navController,
+                favoritosViewModel = favoritosViewModel
             )
         }
 
-        // Detalle Gastronomía
         composable(
             route = Screen.DetalleGastronomia.route,
             arguments = listOf(
@@ -105,11 +109,11 @@ fun NavGraph(navController: NavHostController) {
             val gastronomiaId = backStackEntry.arguments?.getInt("id") ?: 0
             DetalleGastronomiaScreen(
                 gastronomiaId = gastronomiaId,
-                navController = navController
+                navController = navController,
+                favoritosViewModel = favoritosViewModel
             )
         }
 
-        // Detalle Transporte
         composable(
             route = Screen.DetalleTransporte.route,
             arguments = listOf(
@@ -119,7 +123,8 @@ fun NavGraph(navController: NavHostController) {
             val transporteId = backStackEntry.arguments?.getInt("id") ?: 0
             DetalleTransporteScreen(
                 transporteId = transporteId,
-                navController = navController
+                navController = navController,
+                favoritosViewModel = favoritosViewModel
             )
         }
     }

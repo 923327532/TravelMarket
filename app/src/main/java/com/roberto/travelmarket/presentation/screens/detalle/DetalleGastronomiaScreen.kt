@@ -24,21 +24,26 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.roberto.travelmarket.viewmodel.GastronomiaViewModel
+import com.roberto.travelmarket.viewmodel.FavoritosViewModel
+import com.roberto.travelmarket.viewmodel.ItemFavorito
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetalleGastronomiaScreen(
     gastronomiaId: Int,
     navController: NavController,
+    favoritosViewModel: FavoritosViewModel,
     viewModel: GastronomiaViewModel = viewModel()
 ) {
     val context = LocalContext.current
-    var isFavorito by remember { mutableStateOf(false) }
 
     val gastronomias by viewModel.allGastronomia.collectAsState()
     val gastronomia = remember(gastronomias, gastronomiaId) {
         gastronomias.find { it.id == gastronomiaId } ?: gastronomias.firstOrNull()
     }
+
+    val favoritos by favoritosViewModel.favoritos.collectAsState()
+    val esFavorito = favoritos.any { it.id == gastronomiaId && it.categoria == "Gastronomía" }
 
     gastronomia?.let { gastroData ->
         Scaffold(
@@ -61,11 +66,25 @@ fun DetalleGastronomiaScreen(
                         }
                     },
                     actions = {
-                        IconButton(onClick = { isFavorito = !isFavorito }) {
+                        IconButton(onClick = {
+                            if (esFavorito) {
+                                favoritosViewModel.quitarFavorito(gastronomiaId, "Gastronomía")
+                            } else {
+                                favoritosViewModel.agregarFavorito(
+                                    ItemFavorito(
+                                        id = gastronomiaId,
+                                        titulo = gastroData.nombre,
+                                        subtitulo = "Restaurante",
+                                        categoria = "Gastronomía",
+                                        imagenResId = gastroData.imagenResId
+                                    )
+                                )
+                            }
+                        }) {
                             Icon(
-                                if (isFavorito) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                                if (esFavorito) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
                                 contentDescription = "Favorito",
-                                tint = if (isFavorito) Color.Red else Color.White
+                                tint = if (esFavorito) Color.Red else Color.White
                             )
                         }
                     },
@@ -82,7 +101,6 @@ fun DetalleGastronomiaScreen(
                     .verticalScroll(rememberScrollState())
                     .background(Color(0xFFF5F5F5))
             ) {
-                // Imagen principal con badge
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -95,7 +113,6 @@ fun DetalleGastronomiaScreen(
                         contentScale = ContentScale.Crop
                     )
 
-                    // Badge de categoría
                     Surface(
                         modifier = Modifier
                             .align(Alignment.TopEnd)
@@ -113,7 +130,6 @@ fun DetalleGastronomiaScreen(
                     }
                 }
 
-                // Contenido
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -128,7 +144,6 @@ fun DetalleGastronomiaScreen(
                             .fillMaxWidth()
                             .padding(20.dp)
                     ) {
-                        // Título
                         Text(
                             text = gastroData.nombre,
                             fontSize = 22.sp,
@@ -138,7 +153,6 @@ fun DetalleGastronomiaScreen(
 
                         Spacer(modifier = Modifier.height(16.dp))
 
-                        // Ubicación
                         Row(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
@@ -158,7 +172,6 @@ fun DetalleGastronomiaScreen(
 
                         Spacer(modifier = Modifier.height(20.dp))
 
-                        // Descripción
                         Text(
                             text = "Restaurante galardonado que ofrece una experiencia culinaria única basada en los ecosistemas del Perú.",
                             fontSize = 15.sp,
@@ -168,30 +181,42 @@ fun DetalleGastronomiaScreen(
 
                         Spacer(modifier = Modifier.height(24.dp))
 
-                        // Botón Favoritos
                         Button(
-                            onClick = { isFavorito = !isFavorito },
+                            onClick = {
+                                if (esFavorito) {
+                                    favoritosViewModel.quitarFavorito(gastronomiaId, "Gastronomía")
+                                } else {
+                                    favoritosViewModel.agregarFavorito(
+                                        ItemFavorito(
+                                            id = gastronomiaId,
+                                            titulo = gastroData.nombre,
+                                            subtitulo = "Restaurante",
+                                            categoria = "Gastronomía",
+                                            imagenResId = gastroData.imagenResId
+                                        )
+                                    )
+                                }
+                            },
                             modifier = Modifier.fillMaxWidth(),
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = Color(0xFF2196F3)
+                                containerColor = if (esFavorito) Color(0xFFE57373) else Color(0xFF2196F3)
                             ),
                             shape = RoundedCornerShape(8.dp)
                         ) {
                             Icon(
-                                if (isFavorito) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                                if (esFavorito) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
                                 contentDescription = null,
                                 modifier = Modifier.size(20.dp)
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
-                                if (isFavorito) "Eliminar de Favoritos" else "Agregar a Favoritos",
+                                if (esFavorito) "Quitar de Favoritos" else "Agregar a Favoritos",
                                 fontSize = 15.sp
                             )
                         }
 
                         Spacer(modifier = Modifier.height(12.dp))
 
-                        // Botón Ver en mapa
                         OutlinedButton(
                             onClick = {
                                 val gmmIntentUri = Uri.parse("geo:${gastroData.latitud},${gastroData.longitud}?q=${gastroData.latitud},${gastroData.longitud}(${gastroData.nombre})")
@@ -219,7 +244,6 @@ fun DetalleGastronomiaScreen(
 
                         Spacer(modifier = Modifier.height(20.dp))
 
-                        // Información adicional
                         Surface(
                             modifier = Modifier.fillMaxWidth(),
                             color = Color(0xFFF5F5F5),

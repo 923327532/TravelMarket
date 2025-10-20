@@ -306,6 +306,7 @@ Día 3
 
 **Fecha:** Día 3 del proyecto  
 
+---
 
 # Día 4
 
@@ -456,6 +457,54 @@ Se realizó el merge de las ramas individuales a main.
 **Estadísticas del merge:**
 
 **Fecha:** Día 4 del proyecto
+
+---
+
+# Día 5
+
+---
+
+## 1. Estado de Requisitos Funcionales
+
+| Código | Requisito | Estado |
+|:-------:|-----------|:--------:|
+| **RF21** | El sistema permite filtrar o buscar elementos por nombre o categoría | ✅ Completado |
+| **RF22** | Se incluyen imágenes locales o remotas para enriquecer la presentación | ✅ Completado |
+| **RF23** | Manejo de errores de carga o datos vacíos implementado correctamente | ✅ Completado |
+| **RF24** | Todos los commits en GitHub registrados con mensajes descriptivos | ✅ Completado |
+| **RF25** | Fusión final de ramas sin errores e integración completa del sistema | ✅ Completado |
+
+**Avance General Día 5:** 100% completado (5/5 requisitos)
+
+---
+
+## 2. Resultados Obtenidos
+
+| Funcionalidad | Descripción | Estado |
+|---------------|------------|--------|
+| Búsqueda y filtrado | Resultados dinámicos por texto o categoría | ✅ |
+| Imágenes enriquecidas | Visualización con Coil y drawables | ✅ |
+| Manejo de errores | Estados controlados para vacío o fallo de carga | ✅ |
+| Registro e inicio de sesión | Implementación completa de autenticación con validaciones | ✅ |
+| Historial Git | Commits claros, organizados y aprobados | ✅ |
+| Integración continua | Sistema estable tras merge final | ✅ |
+
+---
+
+## 3. Observaciones Generales
+
+- Se agregó el módulo de **registro e inicio de sesión**, permitiendo gestionar cuentas de usuario dentro del sistema.
+- La aplicación se encuentra en una versión candidata funcional (v1.0)
+- La navegación fluye sin interrupciones entre pantallas
+- Todas las funciones están integradas y operativas
+- Se confirmó la estabilidad del sistema luego de la fusión final, con autenticación activa
+
+---
+
+**Fecha:** Día 5 del proyecto  
+**Versión entregada:** v1.0 – Versión candidata final con interfaz completa, autenticación activa y navegación fluida
+
+
 
 
 

@@ -98,7 +98,6 @@ fun PerfilScreen(
                             selectedIconColor = Color(0xFF2196F3),
                             selectedTextColor = Color(0xFF2196F3),
                             indicatorColor = Color.Transparent
-
                         )
                     )
                 }
@@ -123,7 +122,6 @@ fun PerfilScreen(
                                 .padding(horizontal = 24.dp),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            // ✅ INICIALES DINÁMICAS DEL USUARIO
                             val iniciales = usuario?.nombreCompleto
                                 ?.split(" ")
                                 ?.mapNotNull { it.firstOrNull() }
@@ -149,7 +147,6 @@ fun PerfilScreen(
 
                             Spacer(modifier = Modifier.height(12.dp))
 
-                            // ✅ NOMBRE DINÁMICO DEL USUARIO
                             Text(
                                 usuario?.nombreCompleto ?: "Usuario",
                                 fontSize = 17.sp,
@@ -189,24 +186,31 @@ fun PerfilScreen(
                 }
 
                 item {
-                    Card(
+                    Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .offset(y = (-70).dp)
                             .padding(horizontal = 20.dp),
-                        colors = CardDefaults.cardColors(containerColor = Color.White),
-                        shape = RoundedCornerShape(16.dp),
-                        elevation = CardDefaults.cardElevation(4.dp)
+                        horizontalArrangement = Arrangement.Center
                     ) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 20.dp),
-                            horizontalArrangement = Arrangement.SpaceEvenly
+                        Card(
+                            modifier = Modifier.width(200.dp),
+                            colors = CardDefaults.cardColors(containerColor = Color.White),
+                            shape = RoundedCornerShape(16.dp),
+                            elevation = CardDefaults.cardElevation(4.dp)
                         ) {
-                            StatsItem(icon = Icons.Default.Favorite, value = "${favoritos.size}", label = "Favoritos")
-                            StatsItem(icon = Icons.Default.RemoveRedEye, value = "12", label = "Visitados")
-                            StatsItem(icon = Icons.Default.Star, value = "5", label = "Reseñas")
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 20.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                StatsItem(
+                                    icon = Icons.Default.Favorite,
+                                    value = "${favoritos.size}",
+                                    label = "Favoritos"
+                                )
+                            }
                         }
                     }
                 }
@@ -229,7 +233,6 @@ fun PerfilScreen(
                                 .fillMaxWidth()
                                 .padding(16.dp)
                         ) {
-                            // ✅ EMAIL DINÁMICO
                             PerfilMenuItem(
                                 icon = Icons.Outlined.Email,
                                 title = "Email",
@@ -242,7 +245,6 @@ fun PerfilScreen(
                                 color = Color(0xFFEEEEEE)
                             )
 
-                            // ✅ FECHA DE REGISTRO DINÁMICA
                             PerfilMenuItem(
                                 icon = Icons.Outlined.CalendarToday,
                                 title = "Miembro desde",
@@ -270,33 +272,9 @@ fun PerfilScreen(
                             modifier = Modifier.fillMaxWidth()
                         ) {
                             PerfilMenuButton(
-                                icon = Icons.Outlined.Edit,
-                                title = "Editar Perfil",
-                                onClick = { }
-                            )
-
-                            HorizontalDivider(color = Color(0xFFEEEEEE))
-
-                            PerfilMenuButton(
                                 icon = Icons.Outlined.FavoriteBorder,
                                 title = "Mis Favoritos",
                                 onClick = { navController.navigate(Screen.Favoritos.route) }
-                            )
-
-                            HorizontalDivider(color = Color(0xFFEEEEEE))
-
-                            PerfilMenuButton(
-                                icon = Icons.Outlined.History,
-                                title = "Historial",
-                                onClick = { }
-                            )
-
-                            HorizontalDivider(color = Color(0xFFEEEEEE))
-
-                            PerfilMenuButton(
-                                icon = Icons.Outlined.Settings,
-                                title = "Preferencias",
-                                onClick = { }
                             )
                         }
                     }
@@ -307,7 +285,6 @@ fun PerfilScreen(
                 }
 
                 item {
-                    // ✅ BOTÓN CERRAR SESIÓN FUNCIONAL
                     OutlinedButton(
                         onClick = {
                             authViewModel.cerrarSesion()

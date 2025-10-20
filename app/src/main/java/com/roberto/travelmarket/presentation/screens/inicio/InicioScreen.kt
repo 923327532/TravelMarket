@@ -22,14 +22,14 @@ import com.roberto.travelmarket.presentation.components.ItemCard
 import com.roberto.travelmarket.presentation.components.SearchBar
 import com.roberto.travelmarket.presentation.navigation.Screen
 
-// Data class para los items CON IMAGEN
 data class ItemRecomendado(
     val id: Int,
     val titulo: String,
     val subtitulo: String,
     val categoria: String,
     val ubicacion: String,
-    val imagenResId: Int
+    val imagenResId: Int,
+    val tipoCategoria: String
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -37,60 +37,106 @@ data class ItemRecomendado(
 fun InicioScreen(
     navController: NavController
 ) {
-    // Estado para la búsqueda
     var searchQuery by remember { mutableStateOf("") }
 
-    // ===== ESTADOS PARA EL DRAWER =====
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
-    // Lista completa de items CON IMÁGENES
     val todosLosItems = remember {
         listOf(
             ItemRecomendado(
-                id = 0,
+                id = 1,
                 titulo = "Parque de la Exposición",
                 subtitulo = "Parque y áreas verdes",
                 categoria = "Lugares",
                 ubicacion = "Av. 28 de Julio, Lima",
-                imagenResId = R.drawable.parque_exposicion
+                imagenResId = R.drawable.parque_exposicion,
+                tipoCategoria = "lugar"
             ),
             ItemRecomendado(
-                id = 1,
+                id = 2,
                 titulo = "Circuito Mágico del Agua",
                 subtitulo = "Fuentes y espectáculos",
                 categoria = "Lugares",
                 ubicacion = "Parque de la Reserva, Lima",
-                imagenResId = R.drawable.circuito_magico_agua
+                imagenResId = R.drawable.circuito_magico_agua,
+                tipoCategoria = "lugar"
             ),
             ItemRecomendado(
-                id = 2,
+                id = 3,
                 titulo = "Museo Larco",
                 subtitulo = "Museo histórico",
                 categoria = "Lugares",
                 ubicacion = "Av. Bolívar 1515, Pueblo Libre",
-                imagenResId = R.drawable.museo_larco
+                imagenResId = R.drawable.museo_larco,
+                tipoCategoria = "lugar"
             ),
             ItemRecomendado(
-                id = 3,
+                id = 4,
                 titulo = "Ceremonia de Apertura",
                 subtitulo = "Inauguración",
                 categoria = "Eventos",
                 ubicacion = "Estadio Nacional, Lima",
-                imagenResId = R.drawable.ceremonia_apertura
+                imagenResId = R.drawable.ceremonia_apertura,
+                tipoCategoria = "evento"
             ),
             ItemRecomendado(
-                id = 4,
+                id = 5,
                 titulo = "Competencia de Atletismo",
                 subtitulo = "Atletismo",
                 categoria = "Eventos",
                 ubicacion = "Villa Deportiva Nacional",
-                imagenResId = R.drawable.competencia_atletismo
+                imagenResId = R.drawable.competencia_atletismo,
+                tipoCategoria = "evento"
+            ),
+            ItemRecomendado(
+                id = 6,
+                titulo = "Gala de Clausura",
+                subtitulo = "Clausura",
+                categoria = "Eventos",
+                ubicacion = "Estadio Nacional",
+                imagenResId = R.drawable.gala_clausura,
+                tipoCategoria = "evento"
+            ),
+            ItemRecomendado(
+                id = 7,
+                titulo = "Central Restaurante",
+                subtitulo = "Alta cocina peruana",
+                categoria = "Gastronomía",
+                ubicacion = "Barranco, Lima",
+                imagenResId = R.drawable.central_restaurante,
+                tipoCategoria = "gastronomia"
+            ),
+            ItemRecomendado(
+                id = 8,
+                titulo = "Mercado de Surquillo",
+                subtitulo = "Mercado local",
+                categoria = "Gastronomía",
+                ubicacion = "Surquillo, Lima",
+                imagenResId = R.drawable.mercado_surquillo,
+                tipoCategoria = "gastronomia"
+            ),
+            ItemRecomendado(
+                id = 9,
+                titulo = "Metropolitano",
+                subtitulo = "BRT Lima",
+                categoria = "Transporte",
+                ubicacion = "Varias estaciones en Lima",
+                imagenResId = R.drawable.metropolitano,
+                tipoCategoria = "transporte"
+            ),
+            ItemRecomendado(
+                id = 10,
+                titulo = "Metro de Lima",
+                subtitulo = "Línea 1",
+                categoria = "Transporte",
+                ubicacion = "Villa El Salvador - SJL",
+                imagenResId = R.drawable.metro_lima,
+                tipoCategoria = "transporte"
             )
         )
     }
 
-    // Filtrar items según búsqueda
     val itemsFiltrados = remember(searchQuery) {
         if (searchQuery.isEmpty()) {
             todosLosItems
@@ -104,7 +150,6 @@ fun InicioScreen(
         }
     }
 
-    // ===== ENVOLVER TODO EN ModalNavigationDrawer =====
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
@@ -192,7 +237,6 @@ fun InicioScreen(
                 contentPadding = PaddingValues(vertical = 0.dp),
                 verticalArrangement = Arrangement.spacedBy(0.dp)
             ) {
-                // ==================== BLOQUE BLANCO: SearchBar + Categorías ====================
                 item {
                     Card(
                         modifier = Modifier
@@ -209,7 +253,6 @@ fun InicioScreen(
                                 .fillMaxWidth()
                                 .padding(bottom = 12.dp)
                         ) {
-                            // Barra de búsqueda
                             SearchBar(
                                 placeholder = "Buscar por nombre o categoría...",
                                 onSearch = { query ->
@@ -217,7 +260,6 @@ fun InicioScreen(
                                 }
                             )
 
-                            // Categorías en FILA HORIZONTAL (SIN CONTADOR)
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -261,12 +303,10 @@ fun InicioScreen(
                     }
                 }
 
-                // Espaciado entre bloques
                 item {
                     Spacer(modifier = Modifier.height(8.dp))
                 }
 
-                // Mostrar contador de resultados si hay búsqueda activa
                 if (searchQuery.isNotEmpty()) {
                     item {
                         Text(
@@ -282,7 +322,6 @@ fun InicioScreen(
                     }
                 }
 
-                // Lista de items CON IMÁGENES
                 items(itemsFiltrados.size) { index ->
                     val item = itemsFiltrados[index]
                     Box(modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)) {
@@ -292,13 +331,17 @@ fun InicioScreen(
                             subtitulo = item.subtitulo,
                             imagenResId = item.imagenResId,
                             onClick = {
-                                navController.navigate(Screen.DetalleLugar.createRoute(item.id))
+                                when (item.tipoCategoria) {
+                                    "lugar" -> navController.navigate(Screen.DetalleLugar.createRoute(item.id))
+                                    "evento" -> navController.navigate(Screen.DetalleEvento.createRoute(item.id))
+                                    "gastronomia" -> navController.navigate(Screen.DetalleGastronomia.createRoute(item.id))
+                                    "transporte" -> navController.navigate(Screen.DetalleTransporte.createRoute(item.id))
+                                }
                             }
                         )
                     }
                 }
 
-                // Mensaje si no hay resultados
                 if (itemsFiltrados.isEmpty() && searchQuery.isNotEmpty()) {
                     item {
                         Card(
